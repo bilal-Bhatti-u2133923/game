@@ -1,95 +1,84 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './App.css';
 
-function Square({ value, onSquareClick }) {
-  return (
-    <button className="square" onClick={onSquareClick}>
-      {value}
-    </button>
-  );
-}
+function App() {
+  // State variables for the game board, current player, question status, and question/answer
+  const [board, setBoard] = useState(Array(9).fill(null)); // Array to represent the Tic Tac Toe board
+  const [currentPlayer, setCurrentPlayer] = useState('X'); // Current player (X or O)
+  const [isQuestionCorrect, setIsQuestionCorrect] = useState(false); // Flag indicating if the current question was answered correctly
+  const [question, setQuestion] = useState(''); // The current trivia question
+  const [answer, setAnswer] = useState(''); // The correct answer to the current question
 
-function Board({ xIsNext, squares, onPlay }) {
-  function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
-      return;
+  // Fetch a question from an API endpoint when the component mounts
+  useEffect(() => {
+    fetchQuestion();
+  }, []);
+
+  const fetchQuestion = async () => {
+    try {
+      const response = await fetch('https://your-question-api.com/api/question'); // Replace with your question API endpoint
+      const data = await response.json();
+      setQuestion(data.question);
+      setAnswer(data.answer);
+    } catch (error) {
+      console.error('Error fetching question:', error); // Handle potential errors during question fetching
     }
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = 'X';
+  };
+
+  // Handle a click on a Tic Tac Toe cell
+  const handleCellClick = (index) => {
+    // Check if the cell is empty and the question was answered correctly
+    if (board[index] === null && isQuestionCorrect) {
+      const newBoard = [...board]; // Create a copy of the board state
+      newBoard[index] = currentPlayer; // Update the clicked cell with the current player's mark
+      setBoard(newBoard); // Update the board state
+      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X'); // Switch current player
+      setIsQuestionCorrect(false); // Reset question state for next turn
+    }
+  };
+
+  // Handle form submission for answering the question
+  const handleAnswerSubmit = (event) => {
+    event.preventDefault();
+    const userAnswer = event.target.answer.value.toLowerCase(); // Get user's answer in lowercase
+
+    // Check if the user's answer matches the correct answer (case-insensitive)
+    if (answer.toLowerCase() === userAnswer) {
+      setIsQuestionCorrect(true);
     } else {
-      nextSquares[i] = 'O';
+      alert('Incorrect answer! Try again.');
     }
-    onPlay(nextSquares);
-  }
+  };
 
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = 'Winner: ' + winner;
-  } else {
-    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
-  }
-
-  return (
-    <>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
-    </>
-  );
-}
-
-export default function Game() {
-  const [xIsNext, setXIsNext] = useState(true);
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const currentSquares = history[history.length - 1];
-
-  function handlePlay(nextSquares) {
-    setHistory([...history, nextSquares]);
-    setXIsNext(!xIsNext);
-  }
+  // Render the Tic Tac Toe board based on the current state
+  const renderBoard = () => {
+    return board.map((cell, index) => (
+      <button key={index} onClick={() => handleCellClick(index)}>
+        {cell}
+      </button>
+    ));
+  };
 
   return (
-    <div className="game">
+    <div className="App">
+      <h1>Tic Tac Toe</h1>
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        {renderBoard()}
       </div>
-      <div className="game-info">
-        <ol>{/*TODO*/}</ol>
+      <div className="question-container">
+        {/* Only display the question if it hasn't been answered correctly yet */}
+        {isQuestionCorrect ? null : (
+          <form onSubmit={handleAnswerSubmit}>
+            <h2>Question:</h2>
+            <p>{question}</p>
+            <input type="text" name="answer" placeholder="Enter your answer" />
+            <button type="submit">Answer</button>
+          </form>
+        )}
       </div>
+      <p>Current Player: {currentPlayer}</p>
     </div>
   );
 }
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
+export default App;
