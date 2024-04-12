@@ -3,36 +3,35 @@ import './App.css';
 
 function App() {
   // State variables for the game board, current player, question status, and question/answer
-  const [board, setBoard] = useState(Array(9).fill(null)); // Array to represent the Tic Tac Toe board
-  const [currentPlayer, setCurrentPlayer] = useState('X'); // Current player (X or O)
-  const [isQuestionCorrect, setIsQuestionCorrect] = useState(false); // Flag indicating if the current question was answered correctly
-  const [question, setQuestion] = useState(''); // The current trivia question
-  const [answer, setAnswer] = useState(''); // The correct answer to the current question
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [currentPlayer, setCurrentPlayer] = useState('X');
+  const [isQuestionCorrect, setIsQuestionCorrect] = useState(false);
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState(''); // Added answer state for actual answer
 
-  // Fetch a question from an API endpoint when the component mounts
+  // Example questions and answers (replace with your actual API response format)
+  const exampleQuestions = [
+    { question: 'What is the capital of France?', answer: 'paris' },
+    { question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
+    { question: 'What is 2 + 2?', answer: '4' },
+  ];
+
+  // Randomly select a question from the example list on component mount
   useEffect(() => {
-    fetchQuestion();
+    const randomIndex = Math.floor(Math.random() * exampleQuestions.length);
+    const selectedQuestion = exampleQuestions[randomIndex];
+    setQuestion(selectedQuestion.question);
+    setAnswer(selectedQuestion.answer.toLowerCase()); // Store answer in lowercase
   }, []);
-
-  const fetchQuestion = async () => {
-    try {
-      const response = await fetch('https://your-question-api.com/api/question'); // Replace with your question API endpoint
-      const data = await response.json();
-      setQuestion(data.question);
-      setAnswer(data.answer);
-    } catch (error) {
-      console.error('Error fetching question:', error); // Handle potential errors during question fetching
-    }
-  };
 
   // Handle a click on a Tic Tac Toe cell
   const handleCellClick = (index) => {
     // Check if the cell is empty and the question was answered correctly
     if (board[index] === null && isQuestionCorrect) {
-      const newBoard = [...board]; // Create a copy of the board state
-      newBoard[index] = currentPlayer; // Update the clicked cell with the current player's mark
-      setBoard(newBoard); // Update the board state
-      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X'); // Switch current player
+      const newBoard = [...board];
+      newBoard[index] = currentPlayer;
+      setBoard(newBoard);
+      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
       setIsQuestionCorrect(false); // Reset question state for next turn
     }
   };
@@ -40,10 +39,10 @@ function App() {
   // Handle form submission for answering the question
   const handleAnswerSubmit = (event) => {
     event.preventDefault();
-    const userAnswer = event.target.answer.value.toLowerCase(); // Get user's answer in lowercase
+    const userAnswer = event.target.answer.value.toLowerCase();
 
     // Check if the user's answer matches the correct answer (case-insensitive)
-    if (answer.toLowerCase() === userAnswer) {
+    if (userAnswer === answer) {
       setIsQuestionCorrect(true);
     } else {
       alert('Incorrect answer! Try again.');
