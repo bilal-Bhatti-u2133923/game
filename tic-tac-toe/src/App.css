@@ -36,3 +36,33 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* addedstuff */
+
+
+.App {
+  display: flex; /* Allow side-by-side positioning */
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center elements horizontally */
+}
+
+.game-container {
+  display: flex;
+  width: 600px; /* Adjust width as needed */
+}
+
+.board-container {
+  flex: 1; /* Take up remaining space */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
+  grid-gap: 10px; /* Spacing between cells */
+}
+
+.question-container {
+  flex: 1; /* Take up remaining space */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px; /* Rounded corners */
+  margin-left: 20px; /* Spacing from the board */
+}
