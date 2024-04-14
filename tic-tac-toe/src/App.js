@@ -27,8 +27,47 @@ function App() {
       newBoard[index] = currentPlayer;
       setBoard(newBoard);
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+
+      // Update question and answer for next turn
+      const randomIndex = Math.floor(Math.random() * exampleQuestions.length);
+      const selectedQuestion = exampleQuestions[randomIndex];
+      setQuestion(selectedQuestion.question);
+      setAnswer(selectedQuestion.answer.toLowerCase());
       setIsQuestionCorrect(false);
+
+      // Check for winner or draw
+      const winner = checkWinner(board);
+      if (winner) {
+        console.log(`Winner: ${winner}`); // Replace with your UI logic
+      }
     }
+  };
+
+  const checkWinner = (board) => {
+    const winningLines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < winningLines.length; i++) {
+      const [a, b, c] = winningLines[i];
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a]; // Return the winning player symbol
+      }
+    }
+
+    // Check for a draw (all cells filled)
+    if (board.every((cell) => cell !== null)) {
+      return 'draw';
+    }
+
+    return null; // No winner yet
   };
 
   const handleAnswerSubmit = (event) => {
@@ -40,6 +79,18 @@ function App() {
     } else {
       alert('Incorrect answer! Try again.');
     }
+  };
+
+  const handleRestart = () => {
+    setBoard(Array(9).fill(null));
+    setCurrentPlayer('X');
+    setIsQuestionCorrect(false);
+
+    // Reset question and answer (optional)
+    const randomIndex = Math.floor(Math.random() * exampleQuestions.length);
+    const selectedQuestion = exampleQuestions[randomIndex];
+    setQuestion(selectedQuestion.question);
+    setAnswer(selectedQuestion.answer.toLowerCase());
   };
 
   const renderBoard = () => {
@@ -68,6 +119,7 @@ function App() {
         </div>
       </div>
       <p>Current Player: {currentPlayer}</p>
+      <button onClick={handleRestart}>Restart Game</button>
     </div>
   );
 }
