@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
@@ -8,15 +9,15 @@ function App() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
 
-  const exampleQuestions = [
+  const Questions = [
     { question: 'What is the capital of France?', answer: 'paris' },
     { question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
     { question: 'What is 2 + 2?', answer: '4' },
   ];
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * exampleQuestions.length);
-    const selectedQuestion = exampleQuestions[randomIndex];
+    const randomIndex = Math.floor(Math.random() * Questions.length);
+    const selectedQuestion = Questions[randomIndex];
     setQuestion(selectedQuestion.question);
     setAnswer(selectedQuestion.answer.toLowerCase());
   }, []);
@@ -29,18 +30,16 @@ function App() {
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
 
       // Update question and answer for next turn
-      const randomIndex = Math.floor(Math.random() * exampleQuestions.length);
-      const selectedQuestion = exampleQuestions[randomIndex];
+      const randomIndex = Math.floor(Math.random() * Questions.length);
+      const selectedQuestion = Questions[randomIndex];
       setQuestion(selectedQuestion.question);
       setAnswer(selectedQuestion.answer.toLowerCase());
-      setIsQuestionCorrect(false); // Reset question state after placing a piece
+      setIsQuestionCorrect(false);
 
       // Check for winner or draw
       const winner = checkWinner(board);
       if (winner) {
         console.log(`Winner: ${winner}`); // Replace with your UI logic
-        // Stop the game (disable further moves)
-        setIsQuestionCorrect(true);
       }
     }
   };
@@ -89,29 +88,19 @@ function App() {
     setIsQuestionCorrect(false);
 
     // Reset question and answer (optional)
-    const randomIndex = Math.floor(Math.random() * exampleQuestions.length);
-    const selectedQuestion = exampleQuestions[randomIndex];
+    const randomIndex = Math.floor(Math.random() * Questions.length);
+    const selectedQuestion = Questions[randomIndex];
     setQuestion(selectedQuestion.question);
     setAnswer(selectedQuestion.answer.toLowerCase());
   };
 
   const renderBoard = () => {
-    const winner = checkWinner(board);
     return board.map((cell, index) => (
-      <button
-        key={index}
-        onClick={() => handleCellClick(index)}
-        disabled={winner || !isQuestionCorrect} // Disable based on winner or unanswered question
-      >
+      <button key={index} onClick={() => handleCellClick(index)}>
         {cell}
       </button>
     ));
   };
-
-  let winnerMessage;
-  if (winner) {
-    winnerMessage = `Winner: ${winner}`;
-  }
 
   return (
     <div className="App">
@@ -131,7 +120,6 @@ function App() {
         </div>
       </div>
       <p>Current Player: {currentPlayer}</p>
-      {winnerMessage && <p>{winnerMessage}</p>}  {/* Conditionally render winner message */}
       <button onClick={handleRestart}>Restart Game</button>
     </div>
   );
