@@ -33,12 +33,14 @@ function App() {
       const selectedQuestion = exampleQuestions[randomIndex];
       setQuestion(selectedQuestion.question);
       setAnswer(selectedQuestion.answer.toLowerCase());
-      setIsQuestionCorrect(false);
+      setIsQuestionCorrect(false); // Reset question state after placing a piece
 
       // Check for winner or draw
       const winner = checkWinner(board);
       if (winner) {
         console.log(`Winner: ${winner}`); // Replace with your UI logic
+        // Stop the game (disable further moves)
+        setIsQuestionCorrect(true);
       }
     }
   };
@@ -94,12 +96,22 @@ function App() {
   };
 
   const renderBoard = () => {
+    const winner = checkWinner(board);
     return board.map((cell, index) => (
-      <button key={index} onClick={() => handleCellClick(index)}>
+      <button
+        key={index}
+        onClick={() => handleCellClick(index)}
+        disabled={winner || !isQuestionCorrect} // Disable based on winner or unanswered question
+      >
         {cell}
       </button>
     ));
   };
+
+  let winnerMessage;
+  if (winner) {
+    winnerMessage = `Winner: ${winner}`;
+  }
 
   return (
     <div className="App">
@@ -119,6 +131,7 @@ function App() {
         </div>
       </div>
       <p>Current Player: {currentPlayer}</p>
+      {winnerMessage && <p>{winnerMessage}</p>}  {/* Conditionally render winner message */}
       <button onClick={handleRestart}>Restart Game</button>
     </div>
   );
