@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './App.css'; // Assuming a separate CSS file named App.css
 
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -28,18 +27,19 @@ function App() {
       newBoard[index] = currentPlayer;
       setBoard(newBoard);
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      checkWinner(newBoard);
 
       // Update question and answer for next turn
       const randomIndex = Math.floor(Math.random() * Questions.length);
       const selectedQuestion = Questions[randomIndex];
       setQuestion(selectedQuestion.question);
       setAnswer(selectedQuestion.answer.toLowerCase());
-      setIsQuestionCorrect(false);
+      setIsQuestionCorrect(false); // Reset question state after each turn
 
       // Check for winner or draw
       const winner = checkWinner(board);
       if (winner) {
-        console.log(`Winner: ${winner}`); // Replace with your UI logic
+        console.log(`Winner: ${winner}`);
       }
     }
   };
@@ -87,7 +87,7 @@ function App() {
     setCurrentPlayer('X');
     setIsQuestionCorrect(false);
 
-    // Reset question and answer (optional)
+    // Reset question and answer
     const randomIndex = Math.floor(Math.random() * Questions.length);
     const selectedQuestion = Questions[randomIndex];
     setQuestion(selectedQuestion.question);
@@ -96,7 +96,7 @@ function App() {
 
   const renderBoard = () => {
     return board.map((cell, index) => (
-      <button key={index} onClick={() => handleCellClick(index)}>
+      <button key={index} className="board-button" onClick={() => handleCellClick(index)}>
         {cell}
       </button>
     ));
@@ -111,7 +111,7 @@ function App() {
         <div className="question-container">
           <h2>Question:</h2>
           <p>{question}</p>
-          {isQuestionCorrect ? null : (
+          {isQuestionCorrect ? null : ( // Only show form if question not answered correctly
             <form onSubmit={handleAnswerSubmit}>
               <input type="text" name="answer" placeholder="Enter your answer" />
               <button type="submit">Answer</button>
