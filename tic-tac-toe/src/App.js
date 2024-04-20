@@ -8,9 +8,9 @@ function App() {
   const [isQuestionCorrect, setIsQuestionCorrect] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [playState, setplay] = useState(true);
+  const [playState, setplay] = useState(true); // true means that the game is playing. false means the game is over 
 
-  const Questions = [
+  const Questions = [ //questions and ansers 
     { question: 'What is the capital of France?', answer: 'paris' },
     { question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
     { question: 'What is 2 + 2?', answer: '4' },
@@ -30,6 +30,9 @@ function App() {
       const newBoard = [...board];
       newBoard[index] = currentPlayer;
       setBoard(newBoard);
+
+      checkWinner(newBoard);
+
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
 
       // Update question and answer for next turn
@@ -40,12 +43,12 @@ function App() {
       setIsQuestionCorrect(false); // Reset question state after each turn
 
       // Check for winner or draw
-      checkWinner(board);
+      
     
       }
     };
 
-  const checkWinner = (board) => {
+  const checkWinner = (board) => { //checks the winning slots and checks if they are fufilled yet
     const winningLines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -60,7 +63,7 @@ function App() {
     for (let i = 0; i < winningLines.length; i++) {
       const [a, b, c] = winningLines[i];
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-          console.log(`Winner:` + [a]);
+        setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
           setplay(false);
       }
     }
@@ -78,11 +81,12 @@ function App() {
       setIsQuestionCorrect(true);
     } else {
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-      alert('Incorrect answer! '+ currentPlayer +'s turn');// showing the wrong player
+      let player = currentPlayer;
+      alert('Incorrect answer! '+ player +'s turn is over');// showing the wrong player
     }
   };
 
-  const handleRestart = () => {
+  const handleRestart = () => { //restarts the game 
     setBoard(Array(9).fill(null));
     setCurrentPlayer('X');
     setIsQuestionCorrect(false);
@@ -95,7 +99,7 @@ function App() {
     setAnswer(selectedQuestion.answer.toLowerCase());
   };
 
-  const renderBoard = () => {
+  const renderBoard = () => { //sets the board
     return board.map((cell, index) => (
       <button key={index} className="board-button" onClick={() => handleCellClick(index)}>
         {cell}
@@ -103,7 +107,7 @@ function App() {
     ));
   };
 
-  const showcaseBoard = () => {
+  const showcaseBoard = () => { //showcases the board after game is over 
     return board.map((cell, index) => (
       <button key={index} className="board-button">
         {cell}
@@ -132,7 +136,7 @@ function App() {
           </>
           ) : (
           <>
-              <h2>player {currentPlayer} has won</h2>
+              <h2>player {currentPlayer === 'X' ? 'O' : 'X'} has won</h2>
               <button onClick={handleRestart}>restart</button>
           </>
           )}
