@@ -103,6 +103,14 @@ function App() {
     ));
   };
 
+  const showcaseBoard = () => {
+    return board.map((cell, index) => (
+      <button key={index} className="board-button">
+        {cell}
+      </button>
+    ));
+  };
+
 
 
   while (playState = true)
@@ -116,7 +124,7 @@ function App() {
           <div className="question-container">
             <h2>Question:</h2>
             <p>{question}</p>
-            {isQuestionCorrect ? null : ( // Only show form if question not answered correctly
+            {isQuestionCorrect ? null : ( 
               <form onSubmit={handleAnswerSubmit}>
                 <input type="text" name="answer" placeholder="Enter your answer" />
                 <button type="submit">Answer</button>
@@ -127,7 +135,25 @@ function App() {
         <p>Current Player: {currentPlayer}</p>
       </div>
     );
-  }
-}
+  };
+
+  while (playState = false)
+  {
+    return (
+      <div className="App">
+        <div className="game-container">
+          <div className="board-container">
+            {showcaseBoard()}
+          </div>
+          <div className="question-container">
+            <h2>player {currentPlayer} won</h2>
+            <button onClick={handleRestart}>Restart Game</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+};
 
 export default App;
