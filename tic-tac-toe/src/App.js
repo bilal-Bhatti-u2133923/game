@@ -81,8 +81,9 @@ function App() {
       setIsQuestionCorrect(true);
     } else {
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      document.getElementById("answerField").value = "";
       let player = currentPlayer;
-      alert('Incorrect answer! '+ player +'s turn is over');// showing the wrong player
+      alert('Incorrect answer! '+ player +'s turn is over');
     }
   };
 
@@ -128,10 +129,10 @@ function App() {
             <p>{question}</p>
             {isQuestionCorrect ? null : (
               <form onSubmit={handleAnswerSubmit}>
-                <input type='text' name='answer' placeholder='Enter your answer' />
+                <input type='text' name='answer'id='answerField' placeholder='Enter your answer' />   
                 <button type="submit">Answer</button>
                 <p>Current Player: {currentPlayer}</p>
-              </form>
+              </form> //dosent clear afrer incorect anser
             )}
           </>
           ) : (
