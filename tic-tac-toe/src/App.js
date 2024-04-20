@@ -78,7 +78,7 @@ function App() {
       setIsQuestionCorrect(true);
     } else {
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-      alert('Incorrect answer! '+ currentPlayer +'s turn');
+      alert('Incorrect answer! '+ currentPlayer +'s turn');// showing the wrong player
     }
   };
 
@@ -110,50 +110,36 @@ function App() {
       </button>
     ));
   };
-
-
-
-  while (playState = true)
-  {
+  
     return (
       <div className="App">
         <div className="game-container">
           <div className="board-container">
-            {renderBoard()}
+          {playState ? renderBoard() : showcaseBoard()}
           </div>
           <div className="question-container">
+          {playState ? (
+          <>
             <h2>Question:</h2>
             <p>{question}</p>
-            {isQuestionCorrect ? null : ( 
+            {isQuestionCorrect ? null : (
               <form onSubmit={handleAnswerSubmit}>
-                <input type="text" name="answer" placeholder="Enter your answer" />
+                <input type='text' name='answer' placeholder='Enter your answer' />
                 <button type="submit">Answer</button>
+                <p>Current Player: {currentPlayer}</p>
               </form>
             )}
-          </div>
-        </div>
-        <p>Current Player: {currentPlayer}</p>
-      </div>
-    );
-  };
-
-  while (playState = false)
-  {
-    return (
-      <div className="App">
-        <div className="game-container">
-          <div className="board-container">
-            {showcaseBoard()}
-          </div>
-          <div className="question-container">
-            <h2>player {currentPlayer} won</h2>
-            <button onClick={handleRestart}>Restart Game</button>
+          </>
+          ) : (
+          <>
+              <h2>player {currentPlayer} has won</h2>
+              <button onClick={handleRestart}>restart</button>
+          </>
+          )}
           </div>
         </div>
       </div>
     );
-  };
-
 };
 
 export default App;
