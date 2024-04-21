@@ -5,11 +5,9 @@
     transform: translate(-50%, -50%); /* Offset by half width/height */  
 }
 
-/* addedstuff */
-
 .game-container {
   display: flex;
-  width: 600px; /* Adjust width as needed */
+  width: 600px; 
   height: 300px;
 }
 
@@ -26,4 +24,5 @@
   border: 1px solid #ddd;
   border-radius: 5px; /* Rounded corners */
   margin-left: 20px; /* Spacing from the board */
+  text-align: center;
 }

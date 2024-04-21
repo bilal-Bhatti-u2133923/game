@@ -8,13 +8,13 @@ function App() {
   const [isQuestionCorrect, setIsQuestionCorrect] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [playState, setplay] = useState(true); // true means that the game is playing. false means the game is over 
+  const [playState, setplay] = useState(false); // true means that the game is playing. false means the game is over 
 
   const Questions = [ //questions and ansers 
     { question: 'What is the capital of France?', answer: 'paris' },
-    { question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
-    { question: 'What is 2 + 2?', answer: '4' },
-  ];
+    //{ question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
+    //{ question: 'What is 2 + 2?', answer: '4' },
+  ];//remove ^
 
   useEffect(() => { //sets next question and the anser
     const randomIndex = Math.floor(Math.random() * Questions.length);
@@ -132,12 +132,12 @@ function App() {
                 <input type='text' name='answer'id='answerField' placeholder='Enter your answer' />   
                 <button type="submit">Answer</button>
                 <p>Current Player: {currentPlayer}</p>
-              </form> //dosent clear afrer incorect anser
+              </form>
             )}
           </>
           ) : (
           <>
-              <h2>player {currentPlayer === 'X' ? 'O' : 'X'} has won</h2>
+              <p> <h2>player {currentPlayer === 'X' ? 'O' : 'X'} has won</h2> </p>
               <button onClick={handleRestart}>restart</button>
           </>
           )}
