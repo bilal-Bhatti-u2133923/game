@@ -8,7 +8,7 @@ function App() {
   const [isQuestionCorrect, setIsQuestionCorrect] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [playState, setplay] = useState(false); // true means that the game is playing. false means the game is over 
+  const [playState, setplay] = useState(true); // true means that the game is playing. false means the game is over 
 
   const Questions = [ //questions and ansers 
     { question: 'What is the capital of France?', answer: 'paris' },
