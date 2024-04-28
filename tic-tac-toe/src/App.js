@@ -41,10 +41,7 @@ function App() {
       setQuestion(selectedQuestion.question);
       setAnswer(selectedQuestion.answer.toLowerCase());
       setIsQuestionCorrect(false); // Reset question state after each turn
-
-      // Check for winner or draw
       
-    
       }
     };
 
