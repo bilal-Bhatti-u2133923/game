@@ -8,13 +8,14 @@ function App() {
   const [isQuestionCorrect, setIsQuestionCorrect] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+  const [incorect, setIncorect] = useState(0);
   const [playState, setplay] = useState(true); // true means that the game is playing. false means the game is over 
 
   const Questions = [ //questions and ansers 
     { question: 'What is the capital of France?', answer: 'paris' },
-    //{ question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
-    //{ question: 'What is 2 + 2?', answer: '4' },
-  ];//remove ^
+    { question: 'What is the tallest mountain in the world?', answer: 'mount everest' },
+    { question: 'What is 2 + 2?', answer: '4' },
+  ];
 
   useEffect(() => { //sets next question and the anser
     const randomIndex = Math.floor(Math.random() * Questions.length);
@@ -42,7 +43,7 @@ function App() {
       setAnswer(selectedQuestion.answer.toLowerCase());
       setIsQuestionCorrect(false); // Reset question state after each turn
 
-      // Check for winner or draw
+    
       
     
       }
@@ -80,10 +81,22 @@ function App() {
     if (userAnswer === answer) {
       setIsQuestionCorrect(true);
     } else {
-      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-      document.getElementById("answerField").value = "";
-      let player = currentPlayer;
-      alert('Incorrect answer! '+ player +'s turn is over');
+      if (incorect >= 1){
+        const randomIndex = Math.floor(Math.random() * Questions.length);
+        const selectedQuestion = Questions[randomIndex];
+        setQuestion(selectedQuestion.question);
+        setAnswer(selectedQuestion.answer.toLowerCase());
+        setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+        document.getElementById("answerField").value = "";
+        setIncorect(0);
+        alert('Incorrect answer! '+ currentPlayer +'s turn is over. question change');
+      } else {
+        setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+        document.getElementById("answerField").value = "";
+        setIncorect(incorect + 1);
+        let player = currentPlayer;
+        alert('Incorrect answer! '+ player +'s turn is over');
+      }
     }
   };
 
@@ -139,6 +152,7 @@ function App() {
           <>
               <p> <h2>player {currentPlayer === 'X' ? 'O' : 'X'} has won</h2> </p>
               <button onClick={handleRestart}>restart</button>
+              <P>{incorect}</P>
           </>
           )}
           </div>
