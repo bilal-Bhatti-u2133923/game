@@ -29,6 +29,13 @@ function App() {
     { question: 'What is a block of code designed to be reused?', answer: 'function' },
     { question: 'What does AI stand for?', answer: 'artificial intelligence' },
     { question: 'What is the term for storing data remotely on internet servers?', answer: 'cloud' },
+    { question: 'What is the global network of computers?', answer: 'internet' },
+    { question: 'What do you call a device that connects multiple computers together?', answer: 'router' },
+    { question: 'What does the acronym "IP" stand for when talking about computers?', answer: 'internet protocol' },
+    { question: 'What does "HTTP" stand for at the start of web addresses?', answer: 'hypertext transfer protocol' },
+    { question: 'What do you call unwanted bulk emails?', answer: 'spam' },
+    { question: 'What network protocol is responsible for reliably delivering data packets?', answer: 'TCP' },
+    { question: 'What network layer protocol handles internet addresses?', answer: 'IP' },
   ];
 
   useEffect(() => { //sets next question and the anser
@@ -77,7 +84,7 @@ function App() {
 
     for (let i = 0; i < winningLines.length; i++) {//checking each winning line 
       const [a, b, c] = winningLines[i];
-      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {// of its a match a player has won
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
         setplay(false);
       }
@@ -85,6 +92,7 @@ function App() {
 
     if (board.every((cell) => cell !== null)) {
       console.log(`Draw`);
+      setplay(false);
     }
   };
 
@@ -159,9 +167,9 @@ function App() {
                 <form onSubmit={handleAnswerSubmit}>
                   <input type='text' name='answer' id='answerField' placeholder='Enter your answer' />
                   <button type="submit">Answer</button>
-                  <p>Current Player: {currentPlayer}</p>
                 </form>
               )}
+              <p>Current Player: {currentPlayer}</p>
             </>
           ) : (
             <>
