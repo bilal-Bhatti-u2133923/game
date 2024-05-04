@@ -1,8 +1,10 @@
 .App {
-    position: absolute; /* Take the element out of normal flow */
+    position: absolute; 
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Offset by half width/height */  
+    transform: translate(-50%, -50%); /* Offset by half width/height */
+    background-color: rgb(240, 240, 240);
+
 }
 
 .game-container {
@@ -16,6 +18,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
   grid-gap: 10px; /* Spacing between cells */
+  background-color: rgb(100, 100, 100);
+
 }
 
 .question-container {
@@ -25,4 +29,6 @@
   border-radius: 5px; /* Rounded corners */
   margin-left: 20px; /* Spacing from the board */
   text-align: center;
+  background-color: rgb(240, 240, 240);
+
 }
