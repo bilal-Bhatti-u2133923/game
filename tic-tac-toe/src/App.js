@@ -3,15 +3,15 @@ import './App.css';
 
 function App() {
 
-  const [board, setBoard] = useState(Array(9).fill(null));
-  const [currentPlayer, setCurrentPlayer] = useState('X');
-  const [isQuestionCorrect, setIsQuestionCorrect] = useState(false);
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [incorect, setIncorect] = useState(0);
-  const [playState, setplay] = useState(true); // true means that the game is playing. false means the game is over 
+  const [board, setBoard] = useState(Array(9).fill(null)); // game board changes  (X, O)
+  const [currentPlayer, setCurrentPlayer] = useState('X'); //sets the current player changes (X,O)
+  const [isQuestionCorrect, setIsQuestionCorrect] = useState(false); //sets if the question was corect (true, false)
+  const [question, setQuestion] = useState(''); //used to store question (any string from Questions)
+  const [answer, setAnswer] = useState(''); //used to store ansers (any string from Questions)
+  const [incorect, setIncorect] = useState(0); //stores the amount of inocrect absers (int)
+  const [playState, setplay] = useState(true); // true means that the game is playing. false means the game is over (true, false)
 
-  const Questions = [ //questions and ansers 
+  const Questions = [ //stores questions and ansers 
     { question: 'What is the term for a program disguised as legitimate software but with malicious intent?', answer: 'trojan horse' },
     { question: 'What is the brain of a computer?', answer: 'CPU' },
     { question: 'What component primarily displays images and video?', answer: 'monitor' },
@@ -46,9 +46,9 @@ function App() {
       newBoard[index] = currentPlayer;
       setBoard(newBoard);
 
-      checkWinner(newBoard);
+      checkWinner(newBoard); //checks for winner
 
-      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X'); //cycles player
 
       // Update question and answer for next turn
       const randomIndex = Math.floor(Math.random() * Questions.length);
@@ -75,7 +75,7 @@ function App() {
       [2, 4, 6],
     ];
 
-    for (let i = 0; i < winningLines.length; i++) {
+    for (let i = 0; i < winningLines.length; i++) {//checking each winning line 
       const [a, b, c] = winningLines[i];
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
@@ -94,6 +94,7 @@ function App() {
 
     if (userAnswer === answer) {
       setIsQuestionCorrect(true);
+      setIncorect(0)
     } else {
       if (incorect >= 1) {
         const randomIndex = Math.floor(Math.random() * Questions.length);
@@ -166,7 +167,6 @@ function App() {
             <>
               <p> <h2>player {currentPlayer === 'X' ? 'O' : 'X'} has won</h2> </p>
               <button onClick={handleRestart}>restart</button>
-              <P>{incorect}</P>
             </>
           )}
         </div>
