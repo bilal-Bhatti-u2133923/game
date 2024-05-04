@@ -1,34 +1,38 @@
 .App {
-    position: absolute; 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Offset by half width/height */
-    background-color: rgb(240, 240, 240);
-
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Offset by half width/height */
+  background-color: rgb(240, 240, 240);
 }
 
 .game-container {
   display: flex;
-  width: 600px; 
+  width: 600px;
   height: 300px;
 }
 
 .board-container {
-  flex: 1; /* Take up remaining space */
+  flex: 1;
+  /* Take up remaining space */
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
-  grid-gap: 10px; /* Spacing between cells */
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 columns of equal width */
+  grid-gap: 10px;
+  /* Spacing between cells */
   background-color: rgb(100, 100, 100);
-
 }
 
 .question-container {
-  flex: 1; /* Take up remaining space */
+  flex: 1;
+  /* Take up remaining space */
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 5px; /* Rounded corners */
-  margin-left: 20px; /* Spacing from the board */
+  border-radius: 5px;
+  /* Rounded corners */
+  margin-left: 20px;
+  /* Spacing from the board */
   text-align: center;
   background-color: rgb(240, 240, 240);
-
 }
